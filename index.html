@@ -373,6 +373,10 @@ body {
 .empty-title { font-size: 14px; font-weight: 700; color: var(--text2); margin-bottom: 5px; }
 .empty-sub { font-size: 12px; line-height: 1.6; }
 
+/* Hide desktop-only blocks on mobile by default */
+.desktop-summary,
+.desktop-stats-row { display: none; }
+
 /* Animations */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
@@ -429,11 +433,17 @@ body {
   .summary-stats,
   .diff-row { display: none !important; }
 
-  /* Desktop summary: two-panel side by side */
+  /* Show desktop-only blocks */
   .desktop-summary {
-    display: grid;
+    display: grid !important;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
+    margin-bottom: 16px;
+  }
+  .desktop-stats-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
     margin-bottom: 16px;
   }
 
@@ -465,13 +475,7 @@ body {
   .desktop-tot-val .rs-d { font-size: 13px; opacity: 0.65; margin-right: 2px; }
   .desktop-tot-sub { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 6px; }
 
-  /* Secondary stats row desktop */
-  .desktop-stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
+  /* Secondary stats row desktop — dimensions set above in .desktop-stats-row display block */
   .desktop-stat-card {
     background: var(--white); border-radius: var(--r);
     box-shadow: var(--shadow-sm); padding: 14px 16px;
@@ -585,11 +589,9 @@ body {
    PRINT STYLES
 ══════════════════════════════════════════════ */
 @media print {
-  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff !important; font-size: 12px; font-family: 'Sora', sans-serif; }
 
-  body { background: #fff !important; font-size: 12px; }
-
-  /* Hide everything except what we want */
+  /* Hide everything not needed in print */
   .topbar,
   .content,
   .desktop-summary,
@@ -599,62 +601,95 @@ body {
   .diff-row,
   .tbl-badge,
   .btn-print-wrap,
-  .btn-print-wrap,
   .empty-state,
-  .mobile-periods,
-  .desktop-stat-card::before { display: none !important; }
-
-  /* Show print header */
-  .print-header {
-    display: flex !important;
-    flex-wrap: wrap; gap: 5px 18px;
-    border: 1px solid #ddd; border-radius: 5px;
-    padding: 8px 12px; margin-bottom: 10px;
-    background: #f9fafb; font-size: 11px; color: #222;
-  }
-  .print-header strong { font-weight: 700; }
-
-  /* Results column full width */
-  .page { display: block !important; max-width: 100% !important; padding: 0 !important; }
-  .results-col { padding: 0 !important; }
-
-  .tbl-card {
-    border: 1px solid #ddd; border-radius: 5px;
-    box-shadow: none !important; margin-bottom: 8px;
-  }
-  .tbl-title-row { padding: 8px 12px; border-bottom: 1px solid #ddd; }
-  .tbl-title { font-size: 12px; color: #111; }
-
-  /* Show desktop table in print */
   .mobile-periods { display: none !important; }
-  .desktop-table-wrap { display: block !important; }
 
-  table.dt { font-size: 10px !important; }
-  table.dt thead th {
-    background: #f0f0f0 !important; color: #444 !important;
-    padding: 6px 10px !important; border-bottom: 1px solid #ccc !important;
+  /* Full-width page in print */
+  .page { display: block !important; max-width: 100% !important; padding: 0 !important; }
+  .results-col { padding: 8px !important; }
+  #resultsSection { display: block !important; }
+
+  /* ── Print title bar ── */
+  .print-doc-title {
+    display: block !important;
+    font-family: 'Sora', sans-serif;
+    font-size: 16px; font-weight: 800;
+    color: #0B1F3A; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 2px solid #0B1F3A;
   }
-  table.dt tbody td { padding: 7px 10px !important; color: #111 !important; }
-  table.dt tbody tr.fn-row td { color: #777 !important; padding: 1px 10px 6px !important; font-size: 9px !important; }
-  table.dt tbody tr.dr:hover, table.dt tbody tr.dr:hover + tr.fn-row { background: transparent !important; }
-  .dt-int { color: #333 !important; }
-  .dt-principal, .dt-closing, .dt-cumint { color: #111 !important; }
-  .dt-idx { background: #eee !important; color: #333 !important; }
 
-  table.dt tbody tr.dt-total td { background: #f4f4f4 !important; color: #111 !important; }
-  table.dt tbody tr.dt-total.highlight td { background: #1A2332 !important; color: #0ABFA3 !important; }
-
-  /* Print totals summary */
+  /* ── Print totals summary — TOP, no background fill ── */
   .print-totals {
     display: block !important;
-    border: 1px solid #222; border-radius: 5px;
-    padding: 10px 12px; margin-top: 8px;
-    background: #1A2332 !important; color: #fff;
+    border: 1.5px solid #0B1F3A;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    background: #fff !important;
+    color: #0B1F3A;
   }
-  .print-totals table { width: 100%; font-size: 11px; }
-  .print-totals td { padding: 4px 6px; color: #fff; font-family: 'JetBrains Mono', monospace; }
-  .print-totals td:last-child { text-align: right; font-weight: 700; }
-  .print-totals tr:last-child td { color: #0ABFA3; font-size: 13px; }
+  .print-totals table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .print-totals td {
+    padding: 5px 8px; color: #1A2332;
+    font-family: 'JetBrains Mono', monospace;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .print-totals tr:last-child td { border-bottom: none; }
+  .print-totals td:first-child { font-family: 'Sora', sans-serif; color: #4A5568; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .print-totals td:last-child { text-align: right; font-weight: 700; color: #0B1F3A; font-size: 12px; }
+  .print-totals tr.tot-os td:last-child { color: #0ABFA3; font-size: 13px; font-weight: 800; }
+
+  /* ── Print header info bar ── */
+  .print-header {
+    display: flex !important;
+    flex-wrap: wrap; gap: 4px 20px;
+    border: 1px solid #e5e7eb; border-radius: 5px;
+    padding: 7px 12px; margin-bottom: 10px;
+    background: #f8fafc !important; font-size: 10px; color: #555;
+  }
+  .print-header strong { color: #111; font-weight: 700; }
+
+  /* ── Table card ── */
+  .tbl-card {
+    border: 1px solid #ddd !important; border-radius: 5px !important;
+    box-shadow: none !important; margin-bottom: 0 !important;
+    overflow: visible !important;
+  }
+  .tbl-title-row { padding: 8px 12px !important; border-bottom: 1px solid #ddd !important; background: #f8fafc !important; }
+  .tbl-title { font-size: 12px !important; color: #0B1F3A !important; font-weight: 700 !important; }
+
+  /* Desktop table in print */
+  .desktop-table-wrap { display: block !important; overflow: visible !important; }
+  table.dt { font-size: 10px !important; width: 100% !important; }
+  table.dt thead th {
+    background: #f1f5f9 !important; color: #555 !important;
+    padding: 6px 10px !important; border-bottom: 1px solid #ccc !important;
+    font-size: 8.5px !important;
+  }
+  table.dt tbody td {
+    padding: 7px 10px !important; color: #111 !important; background: #fff !important;
+  }
+  table.dt tbody tr.fn-row td {
+    color: #888 !important; padding: 1px 10px 6px !important;
+    font-size: 8.5px !important; background: #fff !important;
+    border-bottom: 1px solid #eee !important;
+  }
+  table.dt tbody tr.dr:hover,
+  table.dt tbody tr.dr:hover + tr.fn-row { background: #fff !important; }
+  .dt-int  { color: #444 !important; }
+  .dt-principal, .dt-closing, .dt-cumint { color: #111 !important; }
+  .dt-idx  { background: #e5e7eb !important; color: #333 !important; }
+
+  /* Total rows in table — no dark fill */
+  table.dt tbody tr.dt-total-sep td { border-bottom: 2px solid #0B1F3A !important; padding: 0 !important; }
+  table.dt tbody tr.dt-total td {
+    background: #f1f5f9 !important; color: #0B1F3A !important;
+    font-weight: 700 !important; padding: 8px 10px !important;
+    border-bottom: 1px solid #ddd !important;
+  }
+  table.dt tbody tr.dt-total td.dt-int { color: #444 !important; }
+  table.dt tbody tr.dt-total td.dt-principal { color: #111 !important; }
+  table.dt tbody tr.dt-total td.dt-closing { color: #0B1F3A !important; }
 }
 </style>
 </head>
@@ -754,7 +789,16 @@ body {
     <!-- Results wrapper -->
     <div id="resultsSection" style="display:none">
 
-      <!-- MOBILE: Big totals first -->
+    <!-- Print document title (print only) -->
+    <div class="print-doc-title" id="printDocTitle" style="display:none">Loan Interest Quotation</div>
+
+    <!-- Print totals — shown at TOP in print, hidden on screen (screen has mobile/desktop blocks) -->
+    <div class="print-totals" id="printTotals" style="display:none"></div>
+
+    <!-- Print header info bar (print only) -->
+    <div class="print-header" id="printHeader" style="display:none"></div>
+
+    <!-- MOBILE: Big totals first -->
       <div class="summary-totals animate-in" id="mobileTotals">
         <div class="summary-totals-inner" id="mobileTotalsInner"></div>
       </div>
@@ -765,7 +809,7 @@ body {
       <!-- MOBILE: Difference row -->
       <div class="diff-row animate-in" id="mobileDiff"></div>
 
-      <!-- DESKTOP: summary panels (hidden on mobile) -->
+      <!-- DESKTOP: summary panels (hidden on mobile via CSS) -->
       <div class="desktop-summary animate-in" id="desktopTotCards"></div>
       <div class="desktop-stats-row animate-in" id="desktopStatsRow"></div>
 
