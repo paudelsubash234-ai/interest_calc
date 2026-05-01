@@ -1129,6 +1129,12 @@ function calculate() {
     </div>`;
   }
   document.getElementById('mobilePeriods').innerHTML=mHtml;
+  /* REMOVE bottom text (label) in mobile only */
+@media (max-width: 859px) {
+  .period-fn {
+    display: none !important;
+  }
+}
 
   // ── DESKTOP: Table rows
   let dtHtml='';
