@@ -97,18 +97,51 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
 .diff-sub{font-size:10px;color:var(--text3);margin-top:1px;}
 
 /* ── MOBILE: Print button only — full-width ── */
-.mobile-print-btn{margin-bottom:12px;}
-.mobile-print-btn .btn-print{
-  width:100%;border-radius:var(--r);height:52px;
-  font-size:14px;font-weight:700;
-  border:1.5px solid var(--blue);color:var(--blue);
-  background:var(--white);box-shadow:var(--shadow-sm);
-  font-family:'Sora',sans-serif;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  transition:background .15s;
+.mobile-print-btn {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center; /* center the button */
 }
-.mobile-print-btn .btn-print:hover{background:var(--blue-soft);}
-.mobile-print-btn .btn-print svg{width:16px;height:16px;}
+
+.mobile-print-btn .btn-print {
+  width: auto;              /* no full width */
+  min-width: 220px;         /* keeps it rectangular */
+  padding: 10px 18px;       /* better spacing */
+  border-radius: 6px;       /* slight rectangle, not pill */
+  height: auto;             /* remove fixed height */
+  
+  font-size: 13px;
+  font-weight: 600;
+
+  border: 1.2px solid var(--blue);
+  color: var(--blue);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+
+  font-family: 'Sora', sans-serif;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  transition: all 0.2s ease;
+}
+
+.mobile-print-btn .btn-print:hover {
+  background: var(--blue-soft);
+  transform: translateY(-1px); /* subtle lift */
+}
+
+.mobile-print-btn .btn-print svg {
+  width: 14px;
+  height: 14px;
+}
+  <button class="btn-print">
+  <svg>...</svg>
+  Print Interest Quotation
+</button>
 
 /* Desktop table card print button */
 .btn-print{width:100%;background:var(--white);border:1.5px solid var(--border2);border-radius:var(--r-sm);color:var(--text2);font-family:'Sora',sans-serif;font-size:13px;font-weight:600;padding:0 20px;height:48px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:var(--shadow-sm);transition:all .15s;}
